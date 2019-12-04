@@ -1,2 +1,4 @@
 ---
-# defaults file for neofetch
+
+neofetch_version: "6.1.0"
+neofetch_prefix: "/usr/local"

@@ -1,0 +1,7 @@
+---
+
+- name: ensure 'make' is installed
+  become: yes
+  yum:
+    name: make
+    state: present

@@ -1,2 +1,21 @@
 ---
-# tasks file for neofetch
+
+- name: include OS-specific tasks.
+  include_tasks: "configure-{{ ansible_os_family }}.yml"
+
+- name: create temporary build directory
+  tempfile:
+    state: directory
+  register: neofetch_temporary_directory
+
+- name: "download neofetch {{ neofetch_version }}"
+  unarchive:
+    src: "https://github.com/dylanaraps/neofetch/archive/{{ neofetch_version }}.tar.gz"
+    dest: "{{ neofetch_temporary_directory.path }}"
+    remote_src: yes
+
+- name: install neofetch
+  become: yes
+  command:
+    cmd: "make PREFIX={{ neofetch_prefix }} install"
+    chdir: "{{ neofetch_temporary_directory.path }}/neofetch-{{ neofetch_version }}"
