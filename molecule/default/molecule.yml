@@ -6,8 +6,16 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
+  - name: centos7_instance
     image: centos:7
+  - name: ubuntu_bionic_instance
+    image: ubuntu:18.04
+  - name: ubuntu_disco_instance
+    image: ubuntu:19.04
+  - name: debian_stretch_instance
+    image: debian:stretch
+  - name: debian_buster_instance
+    image: debian:buster
 provisioner:
   name: ansible
   lint:
