@@ -8,7 +8,7 @@ Role Variables
 
 Available role variables are listed below, along with default values:
 
-    neofetch_version: "6.0.0"
+    neofetch_version: "6.1.0"
     
 The version of Neofetch to download and install.
 
