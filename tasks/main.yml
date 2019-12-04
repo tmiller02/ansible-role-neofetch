@@ -1,21 +1,17 @@
 ---
 
-- name: include OS-specific tasks.
-  include_tasks: "configure-{{ ansible_os_family }}.yml"
+- name: check to see whether neofetch already exists
+  stat:
+    path: "{{ neofetch_prefix }}/bin/neofetch"
+  register: neofetch_stat
 
-- name: create temporary build directory
-  tempfile:
-    state: directory
-  register: neofetch_temporary_directory
-
-- name: "download neofetch {{ neofetch_version }}"
-  unarchive:
-    src: "https://github.com/dylanaraps/neofetch/archive/{{ neofetch_version }}.tar.gz"
-    dest: "{{ neofetch_temporary_directory.path }}"
-    remote_src: yes
+- name: get current neofetch version
+  shell:
+    cmd: "{{ neofetch_prefix }}/bin/neofetch --version | awk '{print $2}'"
+  register: neofetch_current_version
+  failed_when: false
+  when: neofetch_stat.stat.exists
 
 - name: install neofetch
-  become: yes
-  command:
-    cmd: "make PREFIX={{ neofetch_prefix }} install"
-    chdir: "{{ neofetch_temporary_directory.path }}/neofetch-{{ neofetch_version }}"
+  include_tasks: install.yml
+  when: "not neofetch_stat.stat.exists or neofetch_current_version.stdout != neofetch_version"
