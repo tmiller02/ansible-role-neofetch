@@ -5,13 +5,14 @@
     path: "{{ neofetch_prefix }}/bin/neofetch"
   register: neofetch_stat
 
-- name: get current neofetch version
+- name: check the current neofetch version
   shell:
     cmd: "{{ neofetch_prefix }}/bin/neofetch --version | awk '{print $2}'"
-  register: neofetch_current_version
+  register: neofetch_check_version
   failed_when: false
+  changed_when: neofetch_check_version.stdout != neofetch_version
   when: neofetch_stat.stat.exists
 
 - name: install neofetch
   include_tasks: install.yml
-  when: "not neofetch_stat.stat.exists or neofetch_current_version.stdout != neofetch_version"
+  when: "not neofetch_stat.stat.exists or neofetch_check_version.changed"

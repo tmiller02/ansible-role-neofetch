@@ -19,3 +19,4 @@
   command:
     cmd: "make PREFIX={{ neofetch_prefix }} install"
     chdir: "{{ neofetch_temporary_directory.path }}/neofetch-{{ neofetch_version }}"
+  changed_when: true
